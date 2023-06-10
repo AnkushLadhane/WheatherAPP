@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct SearchByCityView: View {
-    @State var searchKey = "Houston"
+    @State var searchKey = "London"
     @ObservedObject var viewModel: WeatherByCityViewModel
     
     var body: some View {
@@ -16,9 +16,9 @@ struct SearchByCityView: View {
             VStack(alignment: .center) {
                 HStack(alignment: .center){
                     VStack (spacing: 15){
-                        Text("Temperature")
-                        let fahrenheitValue = fahrenheitToCelsius(viewModel.mainTemp.temp)
-                        Text("\(fahrenheitValue) C")
+                        Text(" Temperature")
+                        let tempIncelcious = Int(viewModel.mainTemp.temp - 273.15)
+                        Text("\(tempIncelcious) °C")
                     }
                 }
             }
@@ -40,13 +40,13 @@ struct SearchByCityView: View {
                 VStack (spacing: 15){
                     Image(systemName: "thermometer.sun")
                     let strMin = calculateFahrenheit(celsius: viewModel.mainTemp.tempMin)
-                    Text("Min: \(strMin) C")
+                    Text("Min: \(strMin) °C")
                 }.padding(20)
                 
                 VStack (spacing: 15){
                     Image(systemName: "thermometer.sun")
                     let strMax = calculateFahrenheit(celsius: viewModel.mainTemp.tempMax)
-                    Text("Max: \(strMax) C")
+                    Text("Max: \(strMax) °C")
                 }.padding(20)
             }
             
@@ -54,7 +54,7 @@ struct SearchByCityView: View {
             List(viewModel.arrWeather, id: \.id) { weather in
                 HStack {
                     Image(systemName: "cloud")
-                    Text("\(weather.main)")
+                    Text("\(weather.main) - ")
                     Text("\(weather.description)")
                 }
             }
@@ -65,13 +65,7 @@ struct SearchByCityView: View {
         .onAppear(perform: runSearch)
         .onSubmit(of: .search, runSearch)
     }
-    
-    func fahrenheitToCelsius(_ fahrenheit: Double) -> Double {
-        let celsius = (fahrenheit - 32) * 5/9
-        return celsius
-    }
-
-    
+ 
 
     private func runSearch() {
         viewModel.input = .searchByCity(searchKey)
