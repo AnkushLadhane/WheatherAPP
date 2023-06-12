@@ -32,7 +32,11 @@ class SearchByCityNetwork: SearchByCityNetworkProtocol {
         sharedSession.dataTask(with: mainRequest) { rData, response, error in
             
             guard let httpStatus = (response as? HTTPURLResponse)?.statusCode, (200...299).contains(httpStatus) else {
-                Complition(.failure(error!))
+                guard let error = error else {
+                    return
+                }
+                    Complition(.failure(error))
+                
                 return
             }
             do {

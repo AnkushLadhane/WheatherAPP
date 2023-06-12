@@ -25,6 +25,9 @@ class WeatherByCityViewModel: ObservableObject {
             switch action {
             case .searchByCity(let searchKey):
                 debugPrint("\(searchKey)")
+                
+                UserDefaults.standard.set(searchKey, forKey: "searchKey")
+                
                 SearchByCityNetwork.getWeatherByCity(byKey: searchKey) {[weak self] result in
                     switch(result) {
                     case .success(let weathers):

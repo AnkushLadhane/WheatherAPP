@@ -8,10 +8,13 @@
 import SwiftUI
 
 struct SearchByCityView: View {
-    @State var searchKey = "London"
+    
+    @State var searchKey = UserDefaults.standard.object(forKey: "searchKey") as? String ?? ""
     @ObservedObject var viewModel: WeatherByCityViewModel
     
+
     var body: some View {
+        
         VStack (alignment: .leading) {
             VStack(alignment: .center) {
                 HStack(alignment: .center){
@@ -49,7 +52,6 @@ struct SearchByCityView: View {
                     Text("Max: \(strMax) °C")
                 }.padding(20)
             }
-            
             
             List(viewModel.arrWeather, id: \.id) { weather in
                 HStack {
